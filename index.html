@@ -11,11 +11,12 @@
     <meta name="keywords" content="" />
     <meta name="author" content="smknstd" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0"></script>
+    <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.2/dist/tailwind.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/source-sans-pro@3.6.0/source-sans-pro.css" />
 
 </head>
-<body class="leading-normal tracking-normal text-black" style="font-family: 'Source Sans Pro', sans-serif; background: #FAFCFD;">
+<body class="leading-normal tracking-normal text-black">
 
 <div class="pt-24">
     <div class="container mx-auto">
@@ -31,7 +32,7 @@
 </div>
 
 <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5" id="app">
-    <div v-for="as in analytics_services" class="rounded-2xl overflow-hidden shadow-2xl mb-8">
+    <div v-cloak v-for="as in analytics_services" class="rounded-2xl overflow-hidden shadow-2xl mb-8">
         <div class="flex items-start px-4 py-6">
 
             <img class="m-3 w-14 h-14 rounded-full object-cover mr-4" v-bind:src="'logos/' + as.logo" alt="avatar">
@@ -57,11 +58,17 @@
                     </a>
                 </p>
                 <p class="text-gray-700 text-md font-semibold mt-2">
-                    <span v-if="as.pricing_currency=='dollar'">
+                    <span v-if="as.special_pricing !== undefined">
+                        {{ as.special_pricing }}
+                    </span>
+                    <span v-else-if="as.pricing_currency=='dollar'">
                         From <span class="text-2xl">${{ as.pricing_from }}</span> per {{ as.pricing_period}}
                     </span>
                     <span v-else-if="as.pricing_currency=='euro'">
-                        From {{ as.pricing_from }}€ per {{ as.pricing_period}}
+                        From <span class="text-2xl">{{ as.pricing_from }}€</span> per {{ as.pricing_period}}
+                    </span>
+                    <span v-else-if="as.pricing_currency=='pound'">
+                        From <span class="text-2xl">£{{ as.pricing_from }}</span> per {{ as.pricing_period}}
                     </span>
                 </p>
                 <div class="pt-4 pb-2">
@@ -75,6 +82,10 @@
                     <div v-if="as.can_be_self_hosted !== undefined" class="flex items-center mb-1 font-medium">
                         <span v-html="showIcon(as.can_be_self_hosted)"></span>
                         Can be self-hosted
+                    </div>
+                    <div v-if="as.allow_multi_websites !== undefined" class="flex items-center mb-1 font-medium">
+                        <span v-html="showIcon(as.allow_multi_websites)"></span>
+                        Multi websites
                     </div>
                     <div v-if="as.can_export_data !== undefined" class="flex items-center mb-1 font-medium">
                         <span v-html="showIcon(as.can_export_data)"></span>
@@ -109,7 +120,7 @@
                     smknstd
                 </a>
                 . It is cookie free and has no analytics. Missing service or outdated data ? Feel free to submit a PR on
-                <a href="https://github.com/smknstd/pfa" class="underline">
+                <a href="https://github.com/smknstd/privacy-focused-analytics" class="underline">
                     github
                 </a>
                 .
@@ -199,6 +210,7 @@
                     "js_bundle_size_in_kb": 60.5,
                     "is_open_source": true,
                     "github_url": "https://github.com/matomo-org/matomo/",
+                    "can_be_self_hosted": true,
                     "can_export_data": true,
                     "info": "Needs config",
                     "info_url": "https://fr.matomo.org/faq/new-to-piwik/how-do-i-use-matomo-analytics-without-consent-or-cookie-banner/",
@@ -236,7 +248,7 @@
                 },
                 {
                     "name": "Fathom",
-                    "url": "https://usefathom.com/",
+                    "url": "https://usefathom.com/ref/IITCJY",
                     "demo_url": "https://app.usefathom.com/share/sqqvo/chimp+essentials",
                     "logo": 'fathom.jpeg',
                     "creation_year": "2015",
@@ -263,6 +275,178 @@
                     "js_bundle_size_in_kb": 5.0,
                     "is_open_source": false,
                     "can_export_data": "unknown",
+                },
+                {
+                    "name": "Ackee",
+                    "url": "https://ackee.electerious.com/",
+                    "demo_url": "https://demo.ackee.electerious.com/",
+                    "logo": 'ackee.png',
+                    "creation_year": "2014",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 18.9,
+                    "is_open_source": true,
+                    "github_url": "https://github.com/electerious/Ackee",
+                    "can_export_data": "unknown",
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Umami",
+                    "url": "https://umami.is/",
+                    "demo_url": "https://app.umami.is/share/8rmHaheU/umami.is",
+                    "logo": 'umami.png',
+                    "creation_year": "2020",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 2.2,
+                    "is_open_source": true,
+                    "github_url": "https://github.com/mikecao/umami",
+                    "can_export_data": false,
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Nibspace",
+                    "url": "https://nibspace.com/",
+                    "demo_url": "https://nibspace.com/nibspace.com",
+                    "logo": 'nibspace.png',
+                    "creation_year": "2020",
+                    "pricing_from": "8",
+                    "pricing_currency": "dollar",
+                    "pricing_period": "month",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 1.2,
+                    "is_open_source": false,
+                    "can_export_data": false,
+                    "has_custom_domain": false,
+                },
+                {
+                    "name": "Offen",
+                    "url": "https://www.offen.dev/",
+                    "demo_url": null,
+                    "logo": 'offen.jpeg',
+                    "creation_year": "2019",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": "unknown",
+                    "is_open_source": true,
+                    "github_url": "https://github.com/offen/offen",
+                    "can_export_data": "unknown",
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Alpina Web Analytics",
+                    "url": "https://alpina.io/product/web-analytics-events",
+                    "demo_url": "https://alpina.cloud/wa/shared/7d12cac4-0082-4dd0-9c44-1a841e0628b0",
+                    "logo": 'alpina.png',
+                    "creation_year": "2020",
+                    "pricing_from": "4.99",
+                    "pricing_currency": "pound",
+                    "pricing_period": "month",
+                    "allow_multi_websites": "unknown",
+                    "js_bundle_size_in_kb": 2.9,
+                    "is_open_source": false,
+                    "can_export_data": true,
+                    "has_custom_domain": false,
+                },
+                {
+                    "name": "Pirsch",
+                    "url": "https://pirsch.io/",
+                    "demo_url": "https://pirsch.pirsch.io/",
+                    "logo": 'pirschanalytics.png',
+                    "creation_year": "2020",
+                    "pricing_from": "4",
+                    "pricing_currency": "dollar",
+                    "pricing_period": "month",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 0.7,
+                    "is_open_source": true,
+                    "github_url": "https://github.com/pirsch-analytics/pirsch",
+                    "can_export_data": true,
+                    "has_custom_domain": false,
+                    "can_be_self_hosted": false,
+                },
+                {
+                    "name": "Kindmetrics",
+                    "url": "https://kindmetrics.io/",
+                    "demo_url": "https://app.kindmetrics.io/share/851Jv1PW",
+                    "logo": 'kindmetrics.png',
+                    "creation_year": "2020",
+                    "pricing_from": "7",
+                    "pricing_currency": "euro",
+                    "pricing_period": "month",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 2.3,
+                    "is_open_source": true,
+                    "github_url": "https://github.com/kindmetrics/kindmetrics",
+                    "can_export_data": false,
+                    "has_custom_domain": false,
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Jitt",
+                    "url": "https://jitt.io/",
+                    "demo_url": null,
+                    "logo": 'jitt.png',
+                    "creation_year": "2020",
+                    "pricing_from": "22",
+                    "pricing_currency": "dollar",
+                    "pricing_period": "month",
+                    "allow_multi_websites": false,
+                    "js_bundle_size_in_kb": "unknown",
+                    "is_open_source": false,
+                    "can_export_data": true,
+                    "has_custom_domain": false,
+                },
+                {
+                    "name": "TheseMetrics",
+                    "url": "https://thesemetrics.org/",
+                    "demo_url": "https://app.thesemetrics.org/dashboard/thesemetrics.org",
+                    "logo": 'thesemetrics.jpeg',
+                    "creation_year": "2020",
+                    "special_pricing": "Has a free plan",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": 5.9,
+                    "is_open_source": false,
+                    "can_export_data": true,
+                    "has_custom_domain": false,
+                },
+                {
+                    "name": "Counter",
+                    "url": "https://counter.dev/",
+                    "demo_url": "https://counter.dev/app",
+                    "logo": 'counterdev.png',
+                    "creation_year": "2020",
+                    "special_pricing": "Always free (based on donations)",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": "unknown",
+                    "is_open_source": true,
+                    "github_url": "https://github.com/ihucos/counter.dev",
+                    "can_export_data": true,
+                    "has_custom_domain": false,
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Freshlytics",
+                    "url": "https://github.com/sheshbabu/freshlytics",
+                    "demo_url": null,
+                    "logo": 'freshlytics.png',
+                    "creation_year": "2019",
+                    "allow_multi_websites": true,
+                    "js_bundle_size_in_kb": "unknown",
+                    "is_open_source": true,
+                    "github_url": "https://github.com/sheshbabu/freshlytics",
+                    "can_export_data": false,
+                    "can_be_self_hosted": true,
+                },
+                {
+                    "name": "Piratepx",
+                    "url": "https://www.piratepx.com/",
+                    "demo_url": "https://app.piratepx.com/shared/bGQbUJ-YADC_xIGZaYmyqp-J_PD6O1pkCdHmYdIjUvs53ExsImlzFeou4MCuZRbH",
+                    "logo": 'piratepx.png',
+                    "creation_year": "2020",
+                    "allow_multi_websites": false,
+                    "js_bundle_size_in_kb": "0.037",
+                    "is_open_source": true,
+                    "github_url": "https://github.com/piratepx/app",
+                    "can_export_data": false,
+                    "can_be_self_hosted": true,
                 },
             ]
         },
