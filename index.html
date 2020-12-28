@@ -48,11 +48,11 @@
                     Since {{ as.creation_year }}
                 </p>
                 <p class="mt-2 text-blue-700 inline font-semibold">
-                    <a v-bind:href="as.url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 inline-flex items-center">
+                    <a v-bind:href="as.url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 mr-2 inline-flex items-center">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
                         <span>Website</span>
                     </a>
-                    <a v-if="as.demo_url" v-bind:href="as.demo_url" target="_blank" class="ml-2 underline bg-white hover:text-gray-700 py-2 inline-flex items-center">
+                    <a v-if="as.demo_url" v-bind:href="as.demo_url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 inline-flex items-center">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
                         <span>Live demo</span>
                     </a>
