@@ -2,5 +2,10 @@
 
 body {
     font-family: 'Source Sans Pro', sans-serif;
-    background: #FAFCFD;
+    background: rgb(250,252,253);
+    background: linear-gradient(93deg, rgba(250,252,253,1) 0%, rgba(232,232,232,1) 100%);
+}
+
+.title {
+    letter-spacing: -0.05em;
 }

@@ -17,117 +17,150 @@
 
 </head>
 <body class="leading-normal tracking-normal text-black">
-
-<div class="pt-24">
-    <div class="container mx-auto">
-        <div class="flex flex-col items-center w-full justify-center text-center">
-            <h1 class="my-4 text-5xl font-bold leading-tight text-gray-800 mx-10">
-                Privacy focused analytics
-            </h1>
-            <p class="leading-normal text-2xl mb-8 text-gray-800 max-w-3xl mx-10">
-                A collaborative list of website analytics that don't use cookie, don't require consent and focus on privacy.
-            </p>
+    <div class="pt-24">
+        <div class="container mx-auto">
+            <div class="flex flex-col items-center w-full justify-center text-center">
+                <h1 class="my-4 text-5xl leading-tight text-gray-800 mx-10">
+                    <span class="title">Privacy Focused
+                        <span class="font-bold">Analytics</span>
+                    </span>
+                </h1>
+                <p class="leading-normal text-2xl mt-4 mb-8 text-gray-800 max-w-2xl mx-10">
+                    A collaborative list of website analytics that don't use cookie, don't require consent and focus on privacy.
+                </p>
+                <a target="_blank" href="https://github.com/smknstd/privacy-focused-analytics" class="no-underline pl-2">
+                    <svg class="w-10 h-10" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                </a>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5" id="app">
-    <div v-cloak v-for="as in analytics_services" class="rounded-2xl overflow-hidden shadow-2xl mb-8">
-        <div class="flex items-start px-4 py-6">
+    <div id="app" v-cloak>
+        <div class="container mx-auto mt-10 mb-6">
+            <div class="flex flex-col text-xl justify-center text-center">
+                <div>
+                    Open source
+                    <select v-model="filterIsOpenSource" class="rounded-xl px-2 py-1">
+                        <option value="all">Whatever</option>
+                        <option value="only">Yes</option>
+                    </select>
+                </div>
+                <div class="my-3">
+                    Sort by
+                    <select v-model="sortByField" class="rounded-xl px-2 py-1">
+                        <option value="pricing_from">Price</option>
+                        <option value="name">Name</option>
+                        <option value="creation_year">Creation year</option>
+                        <option value="js_bundle_size_in_kb">JS bundle size</option>
+                    </select>
+                </div>
+                <div>
+                    Ordered
+                    <select v-model="orderedBy" class="rounded-xl px-2 py-1">
+                        <option value="asc">Asc</option>
+                        <option value="desc">Desc</option>
+                    </select>
+                </div>
+            </div>
+        </div>
 
-            <img class="m-3 w-14 h-14 rounded-full object-cover mr-4" v-bind:src="'logos/' + as.logo" alt="avatar">
 
-            <div class="mx-3 mt-2 w-full">
-                <div class="flex items-center justify-between">
-                    <div class="font-bold text-xl">{{ as.name }}</div>
-                    <span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
+        <div class="p-10 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-5">
+            <div v-for="as in filteredServices" class="rounded-2xl overflow-hidden shadow-2xl mb-8 bg-white">
+                <div class="flex items-start px-4 py-6">
+
+                    <img class="m-3 w-14 h-14 rounded-full object-cover mr-4" v-bind:src="'logos/' + as.logo" alt="avatar">
+
+                    <div class="mx-3 mt-2 w-full">
+                        <div class="flex items-center justify-between">
+                            <div class="font-bold text-xl">{{ as.name }}</div>
+                            <span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
                         {{ getBundleSizeLabel(as) }}
                     </span>
-                </div>
-                <p class="text-gray-700 text-base">
-                    Since {{ as.creation_year }}
-                </p>
-                <p class="mt-2 text-blue-700 inline font-semibold">
-                    <a v-bind:href="as.url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 mr-2 inline-flex items-center">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
-                        <span>Website</span>
-                    </a>
-                    <a v-if="as.demo_url" v-bind:href="as.demo_url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 inline-flex items-center">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
-                        <span>Live demo</span>
-                    </a>
-                </p>
-                <p class="text-gray-700 text-md font-semibold mt-2">
+                        </div>
+                        <p class="text-gray-700 text-base">
+                            Since {{ as.creation_year }}
+                        </p>
+                        <p class="mt-2 text-blue-700 inline font-semibold">
+                            <a v-bind:href="as.url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 mr-2 inline-flex items-center">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
+                                <span>Website</span>
+                            </a>
+                            <a v-if="as.demo_url" v-bind:href="as.demo_url" target="_blank" class="underline bg-white hover:text-gray-700 py-2 inline-flex items-center">
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
+                                <span>Live demo</span>
+                            </a>
+                        </p>
+                        <p class="text-gray-700 text-md font-semibold mt-2">
                     <span v-if="as.special_pricing !== undefined">
                         {{ as.special_pricing }}
                     </span>
-                    <span v-else-if="as.pricing_currency=='dollar'">
+                            <span v-else-if="as.pricing_currency=='dollar'">
                         From <span class="text-2xl">${{ as.pricing_from }}</span> per {{ as.pricing_period}}
                     </span>
-                    <span v-else-if="as.pricing_currency=='euro'">
+                            <span v-else-if="as.pricing_currency=='euro'">
                         From <span class="text-2xl">{{ as.pricing_from }}€</span> per {{ as.pricing_period}}
                     </span>
-                    <span v-else-if="as.pricing_currency=='pound'">
+                            <span v-else-if="as.pricing_currency=='pound'">
                         From <span class="text-2xl">£{{ as.pricing_from }}</span> per {{ as.pricing_period}}
                     </span>
-                </p>
-                <div class="pt-4 pb-2">
-                    <div class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon(as.is_open_source)"></span>
-                        Open source
-                        <a v-if="as.github_url" target="_blank" v-bind:href="as.github_url" class="no-underline pl-2">
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-                        </a>
-                    </div>
-                    <div v-if="as.can_be_self_hosted !== undefined" class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon(as.can_be_self_hosted)"></span>
-                        Can be self-hosted
-                    </div>
-                    <div v-if="as.allow_multi_websites !== undefined" class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon(as.allow_multi_websites)"></span>
-                        Multi websites
-                    </div>
-                    <div v-if="as.can_export_data !== undefined" class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon(as.can_export_data)"></span>
-                        Data export
-                    </div>
-                    <div v-if="as.has_custom_domain !== undefined" class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon(as.has_custom_domain)"></span>
-                        Custom domain
-                    </div>
-                    <div v-if="as.info !== undefined" class="flex items-center mb-1 font-medium">
-                        <span v-html="showIcon('info')"></span>
-                        <a target="_blank" v-bind:href="as.info_url" class="underline">
-                            {{ as.info }}
-                        </a>
+                        </p>
+                        <div class="pt-4 pb-2">
+                            <div class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.is_open_source)"></span>
+                                Open source
+                                <a v-if="as.github_url" target="_blank" v-bind:href="as.github_url" class="no-underline pl-2">
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>GitHub icon</title><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+                                </a>
+                            </div>
+                            <div v-if="as.can_be_self_hosted !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.can_be_self_hosted)"></span>
+                                Can be self-hosted
+                            </div>
+                            <div v-if="as.allow_multi_websites !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.allow_multi_websites)"></span>
+                                Multi websites
+                            </div>
+                            <div v-if="as.can_export_data !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.can_export_data)"></span>
+                                Data export
+                            </div>
+                            <div v-if="as.has_custom_domain !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.has_custom_domain)"></span>
+                                Custom domain
+                            </div>
+                            <div v-if="as.info !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon('info')"></span>
+                                <a target="_blank" v-bind:href="as.info_url" class="underline">
+                                    {{ as.info }}
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-
-<!--Footer-->
-<footer>
-    <div class="container mx-auto">
-        <div class="flex items-center w-full justify-center text-center">
-            <div class="text-xl mt-20 mb-40 mx-20 text-gray-800 max-w-3xl">
-                This page been made in France with
-                <svg class="w-6 h-6 inline" fill="red" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
-                by
-                <a href="https://smknstd.github.io" class="underline">
-                    smknstd
-                </a>
-                . It is cookie free and has no analytics. Missing service or outdated data ? Feel free to submit a PR on
-                <a href="https://github.com/smknstd/privacy-focused-analytics" class="underline">
-                    github
-                </a>
-                .
+    <footer>
+        <div class="container mx-auto">
+            <div class="flex items-center w-full justify-center text-center">
+                <div class="text-xl mt-20 mb-40 mx-20 text-gray-800 max-w-3xl">
+                    This page has been made in France with
+                    <svg class="w-6 h-6 inline" fill="red" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd"></path></svg>
+                    by
+                    <a href="https://smknstd.github.io" class="underline">
+                        smknstd
+                    </a>
+                    . It is cookie free and has no analytics. Missing service or outdated data ? Feel free to submit a PR on
+                    <a href="https://github.com/smknstd/privacy-focused-analytics" class="underline">
+                        github
+                    </a>
+                    .
+                </div>
             </div>
         </div>
-    </div>
-</footer>
+    </footer>
 </body>
 </html>
 <script>
@@ -442,15 +475,51 @@
                     "logo": 'piratepx.png',
                     "creation_year": "2020",
                     "allow_multi_websites": false,
-                    "js_bundle_size_in_kb": "0.037",
+                    "js_bundle_size_in_kb": 0.037,
                     "is_open_source": true,
                     "github_url": "https://github.com/piratepx/app",
                     "can_export_data": false,
                     "can_be_self_hosted": true,
                 },
-            ]
+            ],
+            filterIsOpenSource: "all",
+            sortByField: "name",
+            orderedBy: "asc",
+        },
+        computed: {
+            filteredServices: function () {
+                let results = this.analytics_services
+                    .filter((service) => {
+                        return this.filterIsOpenSource === "only" ? service.is_open_source === true : true;
+                    })
+                    .sort(this.sortBy());
+
+                if(this.orderedBy === "desc"){
+                    return results.reverse()
+                }
+
+                return results;
+            }
         },
         methods: {
+            sortBy: function() {
+                return (a, b) => {
+                    return (this.getSortValue(a) > this.getSortValue(b)) ? 1 : ((this.getSortValue(b) > this.getSortValue(a)) ? -1 : 0);
+                }
+            },
+            getSortValue: function(object) {
+                const key = this.sortByField;
+                if(key === "pricing_from" || key === "js_bundle_size_in_kb"){
+                    if(object[key] === undefined || object[key] === "unknown" || object[key] === "serverside"){
+                        return 99;
+                    }
+                    return parseFloat(object[key]);
+                }
+                if(object[key] === undefined || object[key] === "unknown" || object[key] === "serverside"){
+                    return "z";
+                }
+                return object[key];
+            },
             showIcon: function (value) {
                 switch (value){
                     case true:
