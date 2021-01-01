@@ -52,14 +52,14 @@
             <div class="flex flex-col text-xl justify-center text-center">
                 <div>
                     Open source
-                    <select v-model="filterIsOpenSource" class="rounded-xl px-2 py-1">
+                    <select v-model="filterIsOpenSource" class="rounded-xl px-2 py-1 bg-gray">
                         <option value="all">Whatever</option>
-                        <option value="only">Yes</option>
+                        <option value="only">Only</option>
                     </select>
                 </div>
                 <div class="my-3">
                     Sort by
-                    <select v-model="sortByField" class="rounded-xl px-2 py-1">
+                    <select v-model="sortByField" class="rounded-xl px-2 py-1 bg-gray">
                         <option value="pricing_from">Price</option>
                         <option value="name">Name</option>
                         <option value="creation_year">Creation year</option>
@@ -68,7 +68,7 @@
                 </div>
                 <div>
                     Ordered
-                    <select v-model="orderedBy" class="rounded-xl px-2 py-1">
+                    <select v-model="orderedBy" class="rounded-xl px-2 py-1 bg-gray">
                         <option value="asc">Asc</option>
                         <option value="desc">Desc</option>
                     </select>
