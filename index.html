@@ -51,13 +51,20 @@
         <div class="container mx-auto mt-10 mb-6">
             <div class="flex flex-col text-xl justify-center text-center">
                 <div>
+                    Cookie free
+                    <select v-model="filterIsCookieFree" class="rounded-xl px-2 py-1 bg-gray-300">
+                        <option value="all">Whatever</option>
+                        <option value="only">Only</option>
+                    </select>
+                </div>
+                <div class="mt-3">
                     Open source
                     <select v-model="filterIsOpenSource" class="rounded-xl px-2 py-1 bg-gray-300">
                         <option value="all">Whatever</option>
                         <option value="only">Only</option>
                     </select>
                 </div>
-                <div class="my-3">
+                <div class="mt-3">
                     Sort by
                     <select v-model="sortByField" class="rounded-xl px-2 py-1 bg-gray-300">
                         <option value="pricing_from">Price</option>
@@ -66,7 +73,7 @@
                         <option value="js_bundle_size_in_kb">JS bundle size</option>
                     </select>
                 </div>
-                <div>
+                <div class="mt-3">
                     Ordered
                     <select v-model="orderedBy" class="rounded-xl px-2 py-1 bg-gray-300">
                         <option value="asc">Asc</option>
@@ -118,6 +125,10 @@
                     </span>
                         </p>
                         <div class="pt-4 pb-2">
+                            <div v-if="as.is_cookie_free !== undefined" class="flex items-center mb-1 font-medium">
+                                <span v-html="showIcon(as.is_cookie_free)"></span>
+                                Cookie free
+                            </div>
                             <div class="flex items-center mb-1 font-medium">
                                 <span v-html="showIcon(as.is_open_source)"></span>
                                 Open source
@@ -368,6 +379,7 @@
                     "demo_url": null,
                     "logo": 'offen.jpeg',
                     "creation_year": "2019",
+                    "is_cookie_free": false,
                     "allow_multi_websites": true,
                     "js_bundle_size_in_kb": "unknown",
                     "is_open_source": true,
@@ -502,9 +514,6 @@
                     "allow_multi_websites": true,
                     "has_custom_domain": false,
                     "special_pricing": "Has a free plan",
-                    "pricing_from": "12",
-                    "pricing_currency": "dollar",
-                    "pricing_period": "month",
                     "js_bundle_size_in_kb": 42,
                     "is_open_source": true,
                     "github_url": "https://github.com/chiffre-io",
@@ -518,6 +527,7 @@
                     "demo_url": "https://dashboard.usertrack.net/server/demoLogin.php",
                     "logo": 'usertrack.png',
                     "creation_year": "2013",
+                    "is_cookie_free": false,
                     "pricing_from": "99",
                     "pricing_currency": "dollar",
                     "pricing_period": "life",
@@ -525,11 +535,11 @@
                     "has_custom_domain": true,
                     "js_bundle_size_in_kb": 7.2,
                     "is_open_source": false,
-                    "can_be_self_hosted": true,
                     "can_export_data": true,
                     "can_be_self_hosted": true,
                 },
             ],
+            filterIsCookieFree: "only",
             filterIsOpenSource: "all",
             sortByField: "name",
             orderedBy: "asc",
@@ -538,7 +548,8 @@
             filteredServices: function () {
                 let results = this.analytics_services
                     .filter((service) => {
-                        return this.filterIsOpenSource === "only" ? service.is_open_source === true : true;
+                        return (this.filterIsOpenSource === "only" ? service.is_open_source === true : true)
+                            && (this.filterIsCookieFree === "only" ? service.is_cookie_free !== false : true);
                     })
                     .sort(this.sortBy());
 
